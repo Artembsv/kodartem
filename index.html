@@ -1,188 +1,935 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
+
 <head>
+    <!-- <script src="scripts/e.js"></script> -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>123123</title>
+    <title>putin-pozdrav - Поздравление от Путина с днем рождения по именам. Нейросеть видео с голосом.</title>
+    <meta name="description" content="Поздравления с 8 марта, юбилеем и Новым годом от Путина! Голосовые и видео поздравления по именам. Нейросеть создаст персонализированное поздравление бесплатно. Скачать аудио и видео в один клик">
+    <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="shortcut icon" href="/favicon.ico" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-title" content="putin-pozdrav.ru" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+    <script>tailwind.config = { theme: { extend: { colors: { primary: '#8B4513', secondary: '#F5E6D3' }, borderRadius: { 'none': '0px', 'sm': '4px', DEFAULT: '8px', 'md': '12px', 'lg': '16px', 'xl': '20px', '2xl': '24px', '3xl': '32px', 'full': '9999px', 'button': '8px' } } } }</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Roboto:wght@300;400;500;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles/remixicon.min.css">
+    <link rel="stylesheet" href="styles/style.css">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-SYVV2KSL04"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+        gtag('config', 'G-SYVV2KSL04');
+    </script>
 </head>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/104/three.min.js"></script>
-<body style=" margin:0;overflow:hidden;">
-<script>
-  let camera, scene, renderer, mesh, material, e, objects,
-      imgData, uv, info, lon = 0, lat = 0;
 
-  var mouseDown = {};
-  var mouse = new THREE.Vector2();
-  var raycaster = new THREE.Raycaster();
-  var canvas = document.createElement('canvas');
-  var ctx = canvas.getContext('2d');
+<body>
+    <header class="bg-white shadow-md fixed w-full top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <a href="#" class="text-3xl font-['Pacifico'] text-primary">putin-pozdrav.ru</a>
+            <nav class="hidden md:flex space-x-6">
+                <!-- <a href="#" class="text-primary hover:text-primary/80 font-medium">Главная</a> -->
+                <a href="#faq" class="text-gray-700 hover:text-primary font-medium">Цена</a>
+                <a href="#examples" class="text-gray-700 hover:text-primary font-medium">Примеры</a>
+                <a href="#faq" class="text-gray-700 hover:text-primary font-medium">Вопросы</a>
+                <a href="#reviews" class="text-gray-700 hover:text-primary font-medium">Отзывы</a>
+                <a href="#occasions" class="text-gray-700 hover:text-primary font-medium">Поводы</a>
+                <a href="#blog" class="text-gray-700 hover:text-primary font-medium">Блог</a>
+            </nav>
+            <a href="#order"
+                class="hidden md:block bg-primary text-white px-5 py-2 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Заказать
+                поздравление</a>
+            <button class="md:hidden w-10 h-10 flex items-center justify-center text-primary" id="mobile-menu-button">
+                <i class="ri-menu-line ri-lg"></i>
+            </button>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-white w-full border-t border-gray-100">
+            <div class="container mx-auto px-4 py-3 flex flex-col space-y-3">
+                <!-- <a href="#" class="text-primary hover:text-primary/80 font-medium">Главная</a> -->
+                <a href="#faq" class="text-gray-700 hover:text-primary font-medium">Цена</a>
+                <a href="#examples" class="text-gray-700 hover:text-primary font-medium">Примеры</a>
+                <a href="#faq" class="text-gray-700 hover:text-primary font-medium">Вопросы</a>
+                <a href="#reviews" class="text-gray-700 hover:text-primary font-medium">Отзывы</a>
+                <a href="#occasions" class="text-gray-700 hover:text-primary font-medium">Поводы</a>
+                <a href="#blog" class="text-gray-700 hover:text-primary font-medium">Блог</a>
+                <a href="#order"
+                    class="bg-primary text-white px-5 py-2 !rounded-button font-medium hover:bg-primary/90 transition text-center whitespace-nowrap">Заказать
+                    поздравление</a>
+            </div>
+        </div>
+    </header>
 
-  init({
-    texture: "https://i.imgur.com/jevL9av.jpg",
-    stencil: "https://i.imgur.com/NUKbrbl.png",
-    objects: {
-      "255,0,0": "Розетка 1",
-      "245,0,0": "Окно 1",
-      "235,0,0": "Лоток",
-      "225,0,0": "Коробка",
-      "215,0,0": "Ящик стола",
-      "205,0,0": "Розетка 2",
-      "195,0,0": "Камин",
-      "185,0,0": "Окно 2",
-      "175,0,0": "А здесь был лось",
-      "165,0,0": "Стол"
-    }
-  })
+    <main class="pt-16">
+        <!-- Hero Section -->
+        <section class="relative min-h-[600px] flex items-center"
+            style="background-image: url('pics/5f569602b2937e0fde8668359dee036b.jpg'); background-size: cover; background-position: center;">
+            <div class="absolute inset-0 bg-gradient-to-r from-[#FFF8DC]/90 to-[#FFF8DC]/50"></div>
+            <div class="container mx-auto px-4 py-20 relative z-10 w-full">
+                <div class="max-w-2xl">
+                    <h1 class="text-4xl md:text-5xl lg:text-6xl text-primary mb-6">Персональное поздравление от В.В.
+                        Путина</h1>
+                    <p class="text-lg md:text-xl text-gray-800 mb-8 subheading">Удивите своих близких уникальным
+                        видеопоздравлением от президента России. Создано с использованием современных нейросетей.</p>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#order"
+                            class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Заказать
+                            поздравление</a>
+                        <a href="#examples"
+                            class="bg-white border-2 border-primary text-primary px-6 py-3 !rounded-button font-medium hover:bg-secondary/30 transition whitespace-nowrap">Смотреть
+                            примеры</a>
+                    </div>
+                </div>
+            </div>
+        </section>
 
-  function init(json) {
-      objects = json.objects;
-      camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 1, 1100);
-      camera.target = new THREE.Vector3(0, 0, 0);
-      scene = new THREE.Scene();
-      let geometry = new THREE.SphereBufferGeometry(500, 60, 40);
-      geometry.scale(-1, 1, 1);
-      material = createMaterial(json.texture, json.stencil);
-      scene.add(mesh = new THREE.Mesh(geometry, material));
-      renderer = new THREE.WebGLRenderer();
-      renderer.setPixelRatio(devicePixelRatio);
-      renderer.setSize(innerWidth, innerHeight);
-      document.body.append(renderer.domElement);
-      info = document.createElement('div');
-      info.id = 'info';
-      document.body.append(info);
-      addEventListener('mousedown', onPointerStart);
-      addEventListener('mousemove', onPointerMove);
-      addEventListener('mouseup', onPointerUp);
-      addEventListener('wheel', onDocumentMouseWheel);
-      addEventListener('touchstart', onPointerStart);
-      addEventListener('touchmove', onPointerMove);
-      addEventListener('touchend', onPointerUp);
-      addEventListener('resize', onWindowResize);
-      animate();
-  }
+        <!-- Examples Section -->
+        <section id="examples" class="py-16 bg-secondary/20" style="padding-bottom: 3rem">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Примеры видеопоздравлений</h2>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8 primery">
+                    <div class="bg-white rounded shadow-md overflow-hidden">
+                        <div class="video-container bg-gray-200">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                                <div class="preloader-4_">
+                                    <div class="preloader-4">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="video-primer" style="width: 640px; height: 360px;">
+                                <iframe scrolling="no"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen style="width: 100%; aspect-ratio: 640/360; border: 0; outline: 0;"
+                                    srcdoc="<style>*{margin:0;padding:0;box-sizing:border-box}body,html{width:100%;height:100%;overflow:hidden}.preview-container{position:relative;width:100%;height:100%;overflow:hidden}.preview-container img{width:100%;height:100%;object-fit:cover;transition:all 0.3s ease}.preview-container:hover img{filter:brightness(0.8);transition:all 0.3s ease}.play-button{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.8);border:1px solid silver;width:80px;height:80px;border-radius:50%;display:flex;justify-content:center;align-items:center;cursor:pointer;transition:all 0.3s ease}.preview-container:hover .play-button{transform:translate(-50%,-50%) scale(1.2);background:#fff;border-color:#fff}.play-button svg{width:50%;height:50%;fill:black}</style><div class='preview-container'><a href='https://vk.com/video_ext.php?oid=-230515652&id=456239020&hd=1&muted=0&muted=false&volume=1&autoplay=1'><img  alt='Поздравление с днем адвокатуры' src='/pics/demo3.webp'><div class='play-button'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l11-7z'/></svg></div></a></div>"></iframe>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold mb-2 subheading">Поздравление с днем адвокатуры</h3>
+                            <p class="text-gray-700">Персональное поздравление с днем адвокатуры.</p>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded shadow-md overflow-hidden">
+                        <div class="video-container bg-gray-200">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                                <div class="preloader-4_">
+                                    <div class="preloader-4">
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                        <div></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="video-primer" style="width: 640px; height: 360px;">
+                                <iframe scrolling="no"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowfullscreen style="width: 100%; aspect-ratio: 640/360; border: 0; outline: 0;"
+                                    srcdoc="<style>*{margin:0;padding:0;box-sizing:border-box}body,html{width:100%;height:100%;overflow:hidden}.preview-container{position:relative;width:100%;height:100%;overflow:hidden}.preview-container img{width:100%;height:100%;object-fit:cover;transition:all 0.3s ease}.preview-container:hover img{filter:brightness(0.8);transition:all 0.3s ease}.play-button{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(255,255,255,0.8);border:1px solid silver;width:80px;height:80px;border-radius:50%;display:flex;justify-content:center;align-items:center;cursor:pointer;transition:all 0.3s ease}.preview-container:hover .play-button{transform:translate(-50%,-50%) scale(1.2);background:#fff;border-color:#fff}.play-button svg{width:50%;height:50%;fill:black}</style><div class='preview-container'><a href='https://vk.com/video_ext.php?oid=-230515652&id=456239022&hd=2&autoplay=1'><img alt='Поздравление с днем рождения от Путина' src='/pics/demo4.webp'><div class='play-button'><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'><path d='M8 5v14l11-7z'/></svg></div></a></div>"></iframe>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold mb-2 subheading">Поздравление Татьяну Александровну с днем рождения</h3>
+                            <p class="text-gray-700">Поздравление Татьяну Александровну от В.В.Путина.</p>
+                        </div>
+                    </div>
+                    <!-- <div class="bg-white rounded shadow-md overflow-hidden">
+                        <div class="video-container bg-gray-200">
+                            <div class="absolute inset-0 flex items-center justify-center bg-black/10">
+                                <button
+                                    class="w-16 h-16 flex items-center justify-center bg-primary/90 text-white rounded-full hover:bg-primary transition">
+                                    <i class="ri-play-fill ri-2x"></i>
+                                </button>
+                            </div>
+                            <img src="pics/none.jpg">
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-xl font-semibold mb-2 subheading">Новогоднее поздравление</h3>
+                            <p class="text-gray-700">Персональное новогоднее поздравление для семьи Козловых.</p>
+                        </div>
+                    </div> -->
+                </div>
+                <a href="https://vkvideo.ru/@club230515652/all" target="_blank" style="text-align: center;
+    display: block;
+    margin: 3em 0px 0px;
+    text-decoration: underline;
+    font-size: 18px;
+    font-weight: bold;">Другие примеры видео поздравлений</a>
+            </div>
+        </section>
 
-  function createMaterial(img, stencil) {
-      let textureLoader = new THREE.TextureLoader();
-      let stencilImage = new Image();
-      stencilImage.crossOrigin = "anonymous";
-      stencilImage.src = stencil;
-      stencilImage.onload = function() {
-          canvas.width = stencilImage.width;
-          canvas.height = stencilImage.height;
-          ctx.drawImage(stencilImage,0,0);
-          imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      };
-      return new THREE.ShaderMaterial({
-          uniforms: {
-              mouse: { type: "2f", value: mouse },
-              texture1: { type: "t", value: textureLoader.load( img ) },
-              texture2: { type: "t", value: textureLoader.load( stencil ) }
-          },
-          vertexShader: `
-              varying vec2 vUv;
-              void main() {
-                  vUv = uv;
-                  gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-              }`,
-          fragmentShader: `
-              precision highp float;
-              varying vec2 vUv;
-              uniform vec2 mouse;
-              uniform sampler2D texture1;
-              uniform sampler2D texture2;
-              void main() {
-                  vec4 stencil = texture2D(texture2, vUv);
-                  gl_FragColor = texture2D(texture1, vUv);
-                  vec4 c = texture2D(texture2, mouse);
-                  if (abs(c.x - stencil.x) < 0.0001 && stencil.x > 0.)
-                      gl_FragColor += vec4(0.,0.2,0,0.);
-              }`
-      })
-  }
+        <!-- Order Section -->
+        <section id="order" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Заказать видеопоздравление</h2>
+                <div class="max-w-3xl mx-auto bg-secondary/20 rounded-lg p-6 md:p-8 shadow-md">
+                    <div class="flex mb-8">
+                        <div class="w-1/3 text-center">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-primary text-white rounded-full mx-auto">
+                                1</div>
+                            <p class="mt-2 text-sm font-medium">Выбор повода</p>
+                        </div>
+                        <div class="w-1/3 text-center">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-gray-300 text-gray-600 rounded-full mx-auto">
+                                2</div>
+                            <p class="mt-2 text-sm font-medium text-gray-500">Текст поздравления</p>
+                        </div>
+                        <div class="w-1/3 text-center">
+                            <div
+                                class="w-10 h-10 flex items-center justify-center bg-gray-300 text-gray-600 rounded-full mx-auto">
+                                3</div>
+                            <p class="mt-2 text-sm font-medium text-gray-500">Оформление заказа</p>
+                        </div>
+                    </div>
 
-  function onWindowResize() {
-      camera.aspect = innerWidth / innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize( innerWidth, innerHeight );
-  }
+                    <form id="orderForm">
+                        <div id="step1" class="step active">
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Выберите повод для
+                                    поздравления</label>
+                                <select
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary pr-8"
+                                    id="occasionSelect" name="povod_menu">
+                                    <option value="">Выберите повод</option>
+                                    <option value="birthday">День рождения</option>
+                                    <option value="wedding">Свадьба</option>
+                                    <option value="graduation">Выпускной</option>
+                                    <option value="achievement">Профессиональные достижения</option>
+                                    <option value="jubilee">Юбилей</option>
+                                    <option value="holiday">Государственный праздник</option>
+                                    <option value="other">Другое</option>
+                                </select>
+                            </div>
 
-  function onPointerStart( event ) {
-      mouseDown.x = event.clientX || event.touches[ 0 ].clientX;
-      mouseDown.y = event.clientY || event.touches[ 0 ].clientY;
-      mouseDown.lon = lon;
-      mouseDown.lat = lat;
-  }
+                            <div class="mb-6" id="otherOccasionField" style="display: none;">
+                                <label class="block text-gray-700 font-medium mb-2">Укажите свой повод</label>
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                    name="povod" placeholder="Опишите повод для поздравления">
+                            </div>
 
-  function raycast(event) {
-      var rect = renderer.domElement.getBoundingClientRect();
-      var x = (event.clientX - rect.left)/rect.width,
-          y = (event.clientY - rect.top)/rect.height;
-      mouse.set(x*2 - 1, 1 - y*2);
-      raycaster.setFromCamera(mouse, camera);
-      var intersects = raycaster.intersectObjects( scene.children );
-      if (intersects.length > 0 && intersects[0].uv) {
-          material.uniforms.mouse.value = uv = intersects[0].uv;
-          if (!imgData)return;
-          let y = Math.floor((1-uv.y)*canvas.height);
-          let x = Math.floor(uv.x*canvas.width);
-          let off = Math.floor(y*canvas.width + x)*4;
-          let r = imgData.data[off];
-          let g = imgData.data[off+1];
-          let b = imgData.data[off+2];
-          info.innerHTML = objects[`${r},${g},${b}`];
-          info.style.left = event.clientX + 15 + 'px';
-          info.style.top = event.clientY + 'px';
-          info.style.opacity = r+g+b ? 1 : 0;
-      }
-  }
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Для кого предназначено
+                                    поздравление?</label>
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                    placeholder="Имя и отчество получателя" name="imya_otchestvo">
+                            </div>
 
-  function onPointerMove( event ) {
-      raycast(e = event);
-      if (!mouseDown.x) return;
-      let clientX = event.clientX || event.touches[0].clientX;
-      let clientY = event.clientY || event.touches[0].clientY;
-      lon = (mouseDown.x - clientX)*camera.fov/600 + mouseDown.lon;
-      lat = (clientY - mouseDown.y)*camera.fov/600 + mouseDown.lat;
-      lat = Math.max( - 85, Math.min( 85, lat ) );
-  }
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Выберите шаблон видео</label>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                    <div
+                                        class="border-2 border-transparent hover:border-primary rounded p-2 cursor-pointer template-option">
+                                        <img src="/pics/demo2.webp" alt="Официальный кабинет"
+                                            class="w-full h-auto rounded mb-2">
+                                        <p class="text-center font-medium">Официальный кабинет</p>
+                                        <img class="galka" src="/pics/galka.png"
+                                            alt="Официальный кабинет видео поздравление от Путина">
+                                    </div>
+                                    <div
+                                        class="border-2 border-transparent hover:border-primary rounded p-2 cursor-pointer template-option">
+                                        <img src="/pics/demo1.webp" alt="Кремлевский зал"
+                                            class="w-full h-auto rounded mb-2">
+                                        <p class="text-center font-medium">Кремлевский зал</p>
+                                        <img class="galka" style="display: none" src="/pics/galka.png"
+                                            alt="Кремлевский зал видео-поздравление от Путина">
+                                    </div>
+                                    <input type="hidden" name="template" value="Официальный кабинет">
+                                </div>
+                            </div>
 
-  function onPointerUp() {
-      mouseDown.x = null;
-  }
+                            <div class="flex justify-end">
+                                <button type="button"
+                                    class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap next-step">Далее</button>
+                            </div>
+                        </div>
 
-  function onDocumentMouseWheel( event ) {
-      let fov = camera.fov + event.deltaY * 0.05;
-      camera.fov = THREE.Math.clamp(fov, 10, 75);
-      camera.updateProjectionMatrix();
-  }
+                        <div id="step2" class="step hidden">
+                            <div class="mb-6" style="margin-bottom: 0px;position: relative;">
+                                <label class="block text-gray-700 font-medium mb-2">Текст поздравления: <a
+                                        href="#sami">или создать копирайтерам.</a></label>
+                                <textarea
+                                    class="textarea_pozdrav w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary h-40"
+                                    name="text_pozdravleniya"
+                                    placeholder="Введите текст поздравления. Например: 'Уважаемый Алексей Петрович! Поздравляю Вас с юбилеем...'"></textarea><span
+                                    id="timetext"></span>
+                                <div id="samitxt">Мы создадим 3 варианта креативного поздравления. Вы выберите один из
+                                    них. Скорректируем ваши пожелания и сделаем видео-поздравление.</div>
+                            </div>
+                            <div style="position: relative;">
+                                <div style="position: absolute; top: -100px" id="sami"></div>
+                            </div>
+                            <div class="mb-6">
+                                <div class="reque checkbox">
+                                    <div class="pozd_samim">
+                                        <input type="checkbox" id="check" name="samim_chekbox"
+                                            class="custom-checkbox mr-2">
+                                        <label for="check" class="cursor">
+                                            Не могу придумать текст поздравления
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-6 dlina_pozdrav">
+                                <label class="block text-gray-700 font-medium mb-2">Длинна поздравления:</label>
+                                <div class="flex items-center">
+                                    <input type="radio" id="dlin_1" name="dlin" class="custom-checkbox mr-2"
+                                        value="Короткое (30 секунд)">
+                                    <label for="dlin_1" class="text-sm text-gray-700">Короткое (30 секунд)</a></label>
+                                </div>
+                                <div class="flex items-center" style="margin: 10px 0">
+                                    <input type="radio" id="dlin_2" name="dlin" checked class="custom-checkbox mr-2"
+                                        value="Среднее (1 минута)">
+                                    <label for="dlin_2" class="text-sm text-gray-700">Среднее (1 минута)</a></label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="dlin_3" name="dlin" class="custom-checkbox mr-2"
+                                        value="Длинное (2 минуты)">
+                                    <label for="dlin_3" class="text-sm text-gray-700">Длинное (2 минуты)</a></label>
+                                </div>
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Дополнительные пожелания:</label>
+                                <textarea
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary h-20"
+                                    placeholder="Укажите особые пожелания к видео (если есть)" name="dop_pozhelaniya"
+                                    style="z-index: 1;position: relative"></textarea>
+                            </div>
 
-  function animate() {
-      requestAnimationFrame(animate);
+                            <div class="flex justify-between">
+                                <button type="button"
+                                    class="bg-gray-300 text-gray-700 px-6 py-3 !rounded-button font-medium hover:bg-gray-400 transition whitespace-nowrap prev-step">Назад</button>
+                                <button type="button"
+                                    class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap next-step">Далее</button>
+                            </div>
+                        </div>
 
-      let phi = THREE.Math.degToRad( 90 - lat );
-      let theta = THREE.Math.degToRad( lon );
-      camera.target.x = 0.001*Math.sin(phi)*Math.cos(theta);
-      camera.target.y = 0.001*Math.cos(phi);
-      camera.target.z = 0.001*Math.sin(phi)*Math.sin(theta);
-      camera.lookAt(camera.target);
-      e&&raycast(e);
-      renderer.render(scene, camera);
-  }
-</script>
-<style>
-  body{
-      margin: 0;
-      overflow: hidden;
-  }
-  #info {
-      position: absolute;
-      background-color: rgba(0,0,0,0.5);
-      color: white;
-      font-family: Arial, sans-serif;
-      font-size: 18px;
-      padding: 0 10px 0 10px;
-      opacity: 0;
-  }
-</style>
+                        <div id="step3" class="step hidden">
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Ваше имя:</label>
+                                <input type="text"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                    placeholder="Имя" name="name">
+                            </div>
+
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Телефон:</label>
+                                <input type="tel"
+                                    class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                    placeholder="В любом формате. Можно просто 89167773344" name="tel">
+                            </div>
+                            <div class="mb-6">
+                                <label class="block text-gray-700 font-medium mb-2">Мессенджер:</label>
+                                <div class="flex messaners">
+                                    <div>
+                                        <input type="checkbox" id="whatsapp" class="custom-checkbox mr-2"
+                                            name="whatsapp_checkbox">
+                                        <label for="whatsapp" class="messrs text-sm text-gray-700">WhatsApp</label>
+                                        <input type="text" style="display: none; margin-bottom: 15px;"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                            placeholder="Если номер такой же - можете оставить это поле пустым. Или введите верный."
+                                            name="whatsapp">
+                                    </div>
+                                    <div>
+                                        <input type="checkbox" id="telegram" class="custom-checkbox mr-2"
+                                            name="telegram_checkbox">
+                                        <label for="telegram" class="messrs text-sm text-gray-700">Telegram</label>
+                                        <input type="text" style="display: none"
+                                            class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                                            placeholder="@ваш логин" name="telegram">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="mb-6 srocha_pozdrav">
+                                <label class="block text-gray-700 font-medium mb-2">Время создания видео:</label>
+                                <div class="flex items-center">
+                                    <input type="radio" id="sroch_1" checked name="sroch" class="custom-checkbox mr-2"
+                                        value="1-3 дня">
+                                    <label for="sroch_1" class="text-sm text-gray-700">1-3 дня</a></label>
+                                </div>
+                                <div class="flex items-center" style="margin: 10px 0">
+                                    <input type="radio" id="sroch_2" name="sroch" class="custom-checkbox mr-2"
+                                        value="1 день">
+                                    <label for="sroch_2" class="text-sm text-gray-700">1 день</a></label>
+                                </div>
+                                <!-- <div class="flex items-center">
+                                    <input type="radio" id="sroch_3" name="sroch" class="custom-checkbox mr-2" value="1-3 часа">
+                                    <label for="sroch_3" class="text-sm text-gray-700">1-3 часа</a></label>
+                                </div> -->
+                            </div>
+
+                            <div class="bg-secondary/30 p-4 rounded mb-6">
+                                <h3 class="font-semibold mb-2">Работы:</h3>
+                                <ul class="list-disc pl-6">
+                                    <li>Создание поздравительного текста - <span class="sozdat_samim">500</span> ₽</li>
+                                    <li>Создание deepfake видео c В.В Путиным - <span>1400 ₽</span></li>
+                                    <li>Длительность видео - <span class="dlitelnost_price">600</span> ₽</li>
+                                    <li>Время создания видео - <span class="srochnost_price"></span> ₽</li>
+                                </ul>
+                                <br>
+                                <h3 class="font-semibold mb-2">Итоговая стоимость: <span class="total_price"></span> ₽
+                                </h3>
+                                <p class="text-sm text-gray-700">Срок изготовления: <span class="srochnost_text"></span>
+                                </p>
+                            </div>
+
+                            <div class="mb-6">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="terms" checked class="custom-checkbox mr-2">
+                                    <label for="terms" class="text-sm text-gray-700">Я согласен с <a href="#"
+                                            class="text-primary hover:underline">условиями предоставления услуг</a> и <a
+                                            href="#" class="text-primary hover:underline">политикой
+                                            конфиденциальности</a></label>
+                                    <input id="summsend" type="hidden" name="summsend" value="1400">
+                                </div>
+                            </div>
+                            <div class="flex justify-between">
+                                <button type="button"
+                                    class="bg-gray-300 text-gray-700 px-6 py-3 !rounded-button font-medium hover:bg-gray-400 transition whitespace-nowrap prev-step">Назад</button>
+                                <button type="submit"
+                                    class="bg-primary text-white px-6 py-3 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Оформить
+                                    заказ</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="py-16 bg-secondary/20">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Отзывы наших клиентов</h2>
+
+                <div class="relative">
+                    <div class="review-slider overflow-hidden">
+                        <div class="flex transition-transform duration-300" id="reviewsContainer">
+                            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold mr-4">
+                                            МК</div>
+                                        <div>
+                                            <h3 class="font-semibold">Михаил Кузнецов</h3>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">Заказывал поздравление для отца с 60-летием. Он был в
+                                        полном восторге! Качество видео отличное, текст был передан точно как я просил.
+                                        Спасибо за такую возможность!</p>
+                                    <p class="text-gray-500 text-sm mt-4">15 мая 2025</p>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold mr-4">
+                                            ЕВ</div>
+                                        <div>
+                                            <h3 class="font-semibold">Елена Васильева</h3>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-half-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">Заказывала поздравление для коллеги с повышением.
+                                        Получилось очень правдоподобно и торжественно. Все были в шоке! Единственное -
+                                        хотелось бы чуть больше вариантов фона.</p>
+                                    <p class="text-gray-500 text-sm mt-4">2 мая 2025</p>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold mr-4">
+                                            АС</div>
+                                        <div>
+                                            <h3 class="font-semibold">Андрей Соколов</h3>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">Заказывал новогоднее поздравление для всей семьи. Дети были
+                                        в восторге! Качество на высоте, сделали даже раньше срока. Обязательно буду
+                                        заказывать еще.</p>
+                                    <p class="text-gray-500 text-sm mt-4">28 апреля 2025</p>
+                                </div>
+                            </div>
+                            <div class="w-full md:w-1/2 lg:w-1/3 flex-shrink-0 px-4">
+                                <div class="bg-white rounded-lg shadow-md p-6 h-full">
+                                    <div class="flex items-center mb-4">
+                                        <div
+                                            class="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center text-primary font-bold mr-4">
+                                            НП</div>
+                                        <div>
+                                            <h3 class="font-semibold">Наталья Петрова</h3>
+                                            <div class="flex text-yellow-400">
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-fill"></i>
+                                                <i class="ri-star-line"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-700">Заказывала поздравление для мужа с юбилеем свадьбы. Он был
+                                        приятно удивлен! Видео получилось очень реалистичным. Спасибо за оперативность и
+                                        качество.</p>
+                                    <p class="text-gray-500 text-sm mt-4">15 апреля 2025</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        class="absolute top-1/2 left-0 transform -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-primary hover:bg-primary/10 transition z-10"
+                        id="prevReview">
+                        <i class="ri-arrow-left-s-line ri-lg"></i>
+                    </button>
+                    <button
+                        class="absolute top-1/2 right-0 transform -translate-y-1/2 w-10 h-10 bg-white shadow-md rounded-full flex items-center justify-center text-primary hover:bg-primary/10 transition z-10"
+                        id="nextReview">
+                        <i class="ri-arrow-right-s-line ri-lg"></i>
+                    </button>
+                </div>
+
+                <div class="text-center mt-12">
+                    <button id="addReviewBtn"
+                        class="bg-white border-2 border-primary text-primary px-6 py-3 !rounded-button font-medium hover:bg-secondary/30 transition whitespace-nowrap">Оставить
+                        отзыв</button>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- FAQ Section -->
+        <section id="faq" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Вопросы - ответы</h2>
+
+                <div class="flex">
+                    <h3 class="text-xl font-semibold mb-3 subheading">
+                        Сколько стоит?
+                    </h3>
+                    <div>
+                        От 1500 руб.<br>
+                        Стоимость зависит от длинны видео и текста поздравления (мы напишем текст сами или готовое от
+                        вас).<br>
+                        Попробуйте оформить заказ. Калькулятор все посчитает и вы увидете конечную стоимость.
+                    </div>
+                </div>
+                <div class="flex">
+                    <h3 class="text-xl font-semibold mb-3 subheading">
+                        Что если мне не понравится видео?
+                    </h3>
+                    <div>
+                        Перед оплатой мы вышлем вам версию видео с водянными знаками и в плохом качестве.<br>
+                        Это достаточно чтобы узнать какое будет видео. Возвраты не принимаются.
+                    </div>
+                </div>
+                <div class="flex">
+                    <h3 class="text-xl font-semibold mb-3 subheading">
+                        Как оплачивать?
+                    </h3>
+                    <div>
+                        Менеджер с вами свяжется и выставит счет.<br>
+                        Оплата картой МИР или СБП.
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Наш блог</h2>
+
+                <div class="flex flex-wrap mb-8">
+                    <div class="w-full md:w-1/2 lg:w-1/4 p-2">
+                        <button
+                            class="ShowWorkModal w-full py-2 px-4 !rounded-button bg-primary text-white whitespace-nowrap">Все
+                            статьи</button>
+                    </div>
+                    <div class="w-full md:w-1/2 lg:w-1/4 p-2">
+                        <button
+                            class="ShowWorkModal w-full py-2 px-4 !rounded-button bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 whitespace-nowrap">Нейросети</button>
+                    </div>
+                    <div class="w-full md:w-1/2 lg:w-1/4 p-2">
+                        <button
+                            class="ShowWorkModal w-full py-2 px-4 !rounded-button bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 whitespace-nowrap">Интересные
+                            факты</button>
+                    </div>
+                    <div class="w-full md:w-1/2 lg:w-1/4 p-2">
+                        <button
+                            class="ShowWorkModal w-full py-2 px-4 !rounded-button bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 whitespace-nowrap">Новости</button>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="pics/f3dbb3e798f55e0394e3e0144b41f1a9.jpg" alt="Как работают нейросети"
+                            class="w-full h-48 object-cover object-top">
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <span
+                                    class="text-xs font-medium bg-secondary/50 text-primary px-2 py-1 rounded">Нейросети</span>
+                                <span class="text-xs text-gray-500 ml-3">12 мая 2025</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 subheading">Как работают нейросети для создания видео
+                            </h3>
+                            <p class="text-gray-700 mb-4">Разбираемся в технологии deepfake и принципах работы
+                                нейросетей, которые позволяют создавать реалистичные видео.</p>
+                            <a class="ShowWorkModal text-primary font-medium hover:underline flex items-center">
+                                Читать далее
+                                <i class="ri-arrow-right-line ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="pics/69444c4414ca6114e0b5b08a79bf97f7.jpg" alt="Реакции на поздравления"
+                            class="w-full h-48 object-cover object-top">
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <span
+                                    class="text-xs font-medium bg-secondary/50 text-primary px-2 py-1 rounded">Интересные
+                                    факты</span>
+                                <span class="text-xs text-gray-500 ml-3">5 мая 2025</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 subheading">Топ-10 самых необычных реакций на
+                                видеопоздравления</h3>
+                            <p class="text-gray-700 mb-4">Собрали самые яркие и эмоциональные реакции людей, получивших
+                                персональные поздравления от президента.</p>
+                            <a class="ShowWorkModal text-primary font-medium hover:underline flex items-center">
+                                Читать далее
+                                <i class="ri-arrow-right-line ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                        <img src="pics/0ce6c9446b9889c2b7ac7e13f22d4b47.jpg" alt="Традиции поздравлений"
+                            class="w-full h-48 object-cover object-top">
+                        <div class="p-6">
+                            <div class="flex items-center mb-3">
+                                <span
+                                    class="text-xs font-medium bg-secondary/50 text-primary px-2 py-1 rounded">Интересные
+                                    факты</span>
+                                <span class="text-xs text-gray-500 ml-3">28 апреля 2025</span>
+                            </div>
+                            <h3 class="text-xl font-semibold mb-3 subheading">История поздравительных традиций в России
+                            </h3>
+                            <p class="text-gray-700 mb-4">Рассказываем об истории и эволюции поздравительных традиций в
+                                России от царских времен до современности.</p>
+                            <a class="ShowWorkModal text-primary font-medium hover:underline flex items-center">
+                                Читать далее
+                                <i class="ri-arrow-right-line ml-1"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-12">
+                    <a
+                        class="ShowWorkModal bg-white border-2 border-primary text-primary px-6 py-3 !rounded-button font-medium hover:bg-secondary/30 transition whitespace-nowrap">Все
+                        статьи</a>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- Occasions Section -->
+        <section id="occasions" class="py-16 bg-white">
+            <div class="container mx-auto px-4">
+                <h2 class="text-3xl md:text-4xl text-primary text-center mb-12">Поводы для поздравления</h2>
+                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-cake-3-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">День рождения</h3>
+                        <p class="text-gray-700">Особенное поздравление с днем рождения от президента России. Идеально
+                            подходит для любого возраста.</p>
+                    </div>
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-hearts-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">Свадьба</h3>
+                        <p class="text-gray-700">Поздравление молодоженов с важным днем в их жизни. Создайте
+                            незабываемый момент на свадебном торжестве.</p>
+                    </div>
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-graduation-cap-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">Выпускной</h3>
+                        <p class="text-gray-700">Поздравление выпускников школ и университетов. Мотивирующее напутствие
+                            от президента.</p>
+                    </div>
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-medal-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">Профессиональные достижения</h3>
+                        <p class="text-gray-700">Поздравление с карьерным ростом, наградами или профессиональными
+                            успехами.</p>
+                    </div>
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-calendar-event-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">Юбилей</h3>
+                        <p class="text-gray-700">Особенное поздравление с круглой датой. Придайте торжественности
+                            важному событию.</p>
+                    </div>
+                    <div
+                        class="bg-secondary/30 rounded p-6 hover:shadow-lg transition duration-300 transform hover:-translate-y-1">
+                        <div class="w-16 h-16 flex items-center justify-center bg-primary/10 rounded-full mb-4">
+                            <i class="ri-flag-line ri-xl text-primary"></i>
+                        </div>
+                        <h3 class="text-xl font-semibold mb-2 subheading">Государственные праздники</h3>
+                        <p class="text-gray-700">Поздравления с Новым годом, Днем России, Днем Победы и другими
+                            государственными праздниками.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- CTA Section -->
+        <section class="py-16 bg-secondary/30">
+            <div class="container mx-auto px-4">
+                <div class="max-w-3xl mx-auto text-center">
+                    <h2 class="text-3xl md:text-4xl text-primary mb-6">Готовы удивить своих близких?</h2>
+                    <p class="text-lg text-gray-700 mb-8">Закажите уникальное видеопоздравление от В.В. Путина уже
+                        сегодня и создайте незабываемый момент для особенного события.</p>
+                    <a href="#order"
+                        class="bg-primary text-white px-8 py-4 !rounded-button font-medium hover:bg-primary/90 transition text-lg whitespace-nowrap">Заказать
+                        поздравление</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-white pt-12 pb-6 border-t border-gray-200">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <div>
+                    <a href="#" class="text-3xl font-['Pacifico'] text-primary mb-4 block">putin-pozdrav.ru</a>
+                    <p class="text-gray-600 mb-4">Создаем уникальные видеопоздравления от президента России с
+                        использованием современных нейросетей.</p>
+                    <div class="flex space-x-4">
+                        <a href="https://t.me/artem4933"
+                            class="w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition">
+                            <i class="ri-telegram-fill ri-lg"></i>
+                        </a>
+                        <a
+                            class="ShowWorkModal w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition">
+                            <i class="ri-vk-fill ri-lg"></i>
+                        </a>
+                        <a
+                            class="ShowWorkModal w-10 h-10 flex items-center justify-center bg-primary/10 text-primary rounded-full hover:bg-primary/20 transition">
+                            <i class="ri-youtube-fill ri-lg"></i>
+                        </a>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 subheading">Навигация</h3>
+                    <ul class="space-y-2">
+                        <!-- <li><a href="#" class="text-gray-600 hover:text-primary">Главная</a></li> -->
+                        <li><a href="#faq" class="text-gray-600 hover:text-primary">Цена</a></li>
+                        <li><a href="#examples" class="text-gray-600 hover:text-primary">Примеры</a></li>
+                        <!-- <li><a href="#faq" class="text-gray-600 hover:text-primary">Вопросы</a></li> -->
+                        <li><a href="#reviews" class="text-gray-600 hover:text-primary">Отзывы</a></li>
+                        <li><a href="#occasions" class="text-gray-600 hover:text-primary">Поводы</a></li>
+                        <li><a href="#blog" class="text-gray-600 hover:text-primary">Блог</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 subheading">Информация</h3>
+                    <ul class="space-y-2">
+                        <li><a class="ShowWorkModal text-gray-600 hover:text-primary">О нас</a></li>
+                        <li><a class="ShowWorkModal text-gray-600 hover:text-primary">Условия использования</a></li>
+                        <li><a class="ShowWorkModal text-gray-600 hover:text-primary">Политика конфиденциальности</a>
+                        </li>
+                        <li><a href="#faq" class="text-gray-600 hover:text-primary">Часто задаваемые вопросы</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-lg font-semibold mb-4 subheading">Контакты</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="ri-mail-line mr-3 mt-1 text-primary"></i>
+                            <span class="text-gray-600"><a
+                                    href="mailto:info@putin-pozdrav.ru">info@putin-pozdrav.ru</a></span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="ri-phone-line mr-3 mt-1 text-primary"></i>
+                            <span class="text-gray-600"><a href="tel:+79292705175">+7 (929) 270-51-75</a></span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="ri-time-line mr-3 mt-1 text-primary"></i>
+                            <span class="text-gray-600">Пн-Вс: 9:00 - 23:00</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="pt-6 border-t border-gray-200 text-center">
+                <p class="text-gray-500 text-sm">© 2025 Все права защищены. Сайт предоставляет услуги создания
+                    развлекательного контента.</p>
+                <p class="text-gray-500 text-xs mt-2">Видеопоздравления создаются с использованием технологии deepfake и
+                    предназначены исключительно для развлекательных целей.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add Review Modal -->
+    <div id="reviewModal" class="fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Оставить отзыв</h3>
+                <button id="closeReviewModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+            </div>
+            <form id="reviewForm">
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Ваше имя</label>
+                    <input type="text"
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary"
+                        required="" name="Name">
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Оценка</label>
+                    <div class="flex space-x-2 text-2xl text-gray-300" id="ratingStars">
+                        <i class="ri-star-fill cursor-pointer hover:text-yellow-400" data-rating="1"></i>
+                        <i class="ri-star-fill cursor-pointer hover:text-yellow-400" data-rating="2"></i>
+                        <i class="ri-star-fill cursor-pointer hover:text-yellow-400" data-rating="3"></i>
+                        <i class="ri-star-fill cursor-pointer hover:text-yellow-400" data-rating="4"></i>
+                        <i class="ri-star-fill cursor-pointer hover:text-yellow-400" data-rating="5"></i>
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Ваш отзыв</label>
+                    <textarea
+                        class="w-full px-4 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary h-32"
+                        required="" name="Review"></textarea>
+                </div>
+                <button type="submit"
+                    class="w-full bg-primary text-white px-4 py-2 !rounded-button font-medium hover:bg-primary/90 transition whitespace-nowrap">Отправить
+                    отзыв</button>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Add Review Modal -->
+    <div class="workModal fixed inset-0 bg-black/50 z-50 hidden flex items-center justify-center">
+        <div class="bg-white rounded-lg max-w-md w-full mx-4 p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-xl font-semibold">Контент в стадии разработки</h3>
+                <button class="closeworkModal" class="text-gray-500 hover:text-gray-700">
+                    <i class="ri-close-line ri-lg"></i>
+                </button>
+            </div>
+            <div>
+                <img style="margin: auto;" src="/pics/nowork.webp"></img>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Order Button -->
+    <!-- <div class="fixed bottom-6 right-6 z-40">
+        <a href="#order"
+            class="w-14 h-14 flex items-center justify-center bg-primary text-white rounded-full shadow-lg hover:bg-primary/90 transition">
+            <i class="ri-shopping-cart-2-line ri-lg"></i>
+        </a>
+    </div> -->
+
+    <!-- <script src="scripts/share.js"></script> -->
+    <script src="https://yastatic.net/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="https://vk.com/js/api/videoplayer.js"></script> -->
+    <script>
+        // $('.video-primer a').on('click', () => {
+        //     console.log('click');
+        //     setTimeout(() => {
+        //         const iframe = document.querySelector('.video-primer iframe');
+        //         const player = VK.VideoPlayer(iframe);
+        //         player.play();
+        //     }, 5000);
+        // })
+    </script>
+    <!-- <script src="scripts/script.js"></script> -->
+    <script src="scripts/script_original47vfhdnc.js"></script>
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function (m, e, t, r, i, k, a) {
+            m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+            m[i].l = 1 * new Date();
+            for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+            k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+        })
+            (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+        ym(102046785, "init", {
+            clickmap: true,
+            trackLinks: true,
+            accurateTrackBounce: true,
+            webvisor: true
+        });
+    </script>
+    <noscript>
+        <div><img src="https://mc.yandex.ru/watch/102046785" style="position:absolute; left:-9999px;" alt="" /></div>
+    </noscript>
+    <!-- /Yandex.Metrika counter -->
+    <script src="//code.jivo.ru/widget/RwH249uUTH" async></script>
 </body>
+
 </html>

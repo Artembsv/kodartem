@@ -1,0 +1,128 @@
+    #rec1173691311,
+    #rec1173837826 {
+        display: none;
+    }
+
+    @media screen and (max-width: 640px) {
+
+        #rec1173659661 .t-quiz__content-wrapper {
+            background: rgb(244, 244, 244);
+        }
+
+        #rec1173659661 .t-quiz__consultant__container {
+            flex-direction: column;
+            -webkit-flex-direction: column;
+        }
+
+        #rec1173659661 :is(.t-quiz__sidebar, #rec1173659661 .t-input-group_two-cols, #rec1173659661 .t-input-group_one-col) .t-input-group__header .t-quiz__consultant__msg-bubble:after,
+        #rec1173659661 :is(.t-quiz__sidebar, #rec1173659661 .t-input-group_two-cols, #rec1173659661 .t-input-group_one-col) .t-quiz__consultant__msg-bubble:after,
+        #rec1173659661 :is(.t-quiz__sidebar, #rec1173659661 .t-input-group_two-cols, #rec1173659661 .t-input-group_one-col) .t-quiz__contact-form__header .t-quiz__consultant__msg-bubble:after {
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid var(--consultant-msg-bubble-bg);
+            border-right: 8px;
+            border-top: 14px solid transparent;
+            left: 40px;
+            right: unset;
+            top: -14px;
+        }
+
+        #rec1173659661 .t-quiz__consultant__img {
+            width: 110px;
+            top: -14px;
+            position: relative;
+        }
+
+        #rec1173659661 .t-quiz__cover__side-container.leftside {
+            background: white;
+        }
+
+        #rec1173659661 .t-quiz__consultant {
+            width: 100vw;
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+
+        #rec1173659661 .t-quiz__consultant__msg-bubble {
+            padding: 30px;
+        }
+
+        #rec1173659661 .t-input-block.t-input-block_rd-flex.t-input-block_rd-width50 {
+            margin: 50px 0 0 0;
+        }
+
+        #rec1173659661 .t-quiz__consultant .t-quiz__consultant__msg {
+            font-size: 16px !important;
+        }
+
+        #rec1173659661 .t-quiz__contact-form__main {
+            margin: 295px 0 0 0;
+        }
+
+        #rec1173659661 .t-quiz__contact-form__header {
+            position: absolute;
+            left: 0;
+            top: 0;
+            background: white;
+            height: 323px;
+        }
+
+        #rec1173659661 .t-quiz__step__input .t-input-block.t-input-block_rd-flex.t-input-block_rd-width50 {
+            margin: 0;
+        }
+
+        #rec1173659661 .t-input-group.t-input-group_rd.t-input-group_one-col .t-input-block.t-input-block_rd-flex.t-input-block_rd-width50 {
+            margin: 0;
+        }
+
+        #rec1173659661 .t-quiz__consultant__msg-bubble::after {
+            border-bottom: unset !important;
+            border-left: unset !important;
+            border-right: unset !important;
+            border-top: unset !important;
+            left: unset !important;
+            right: unset !important;
+            top: unset !important;
+        }
+
+        #rec1173659661 .t-input-group.t-input-group_rd.t-input-group_one-col {
+            margin: 107px 0 0 0;
+        }
+
+        #rec1173659661 .ttxt {
+            font-family: 'Inter';
+            line-height: 125%;
+            font-size: 14px;
+            margin: 25px 0 0 0;
+        }
+
+        #rec1173659661 .t-quiz__content-wrapper {
+            background-color: white;
+        }
+
+        #rec1173659661 {
+            padding-bottom: 0px !important;
+        }
+
+        #rec1173659661 .t-quiz__btn-wrapper.t-quiz__btn-wrapper_mobile {
+            background-color: white;
+            padding-bottom: 90px;
+        }
+
+        #rec1173659661 input[type="text"],
+        #rec1173659661 select {
+            border: 3px solid rgb(28, 36, 69) !important;
+        }
+
+        #rec1173659661 .t-quiz__quiz-wrapper .t-quiz__quiz-wrapper_dynamic-height .t-quiz__quiz-published .leftside-panel .t-quiz__quiz-wrapper_withsidebar .panel-hidden{
+            padding-bottom: 30px;
+        }
+
+        #rec1173659661 .js-form-proccess .t-quiz__progress-bar-container{
+            display: none;
+        }
+
+        #rec1173659661 .t-quiz__cover__side-container .t-quiz__cover__content-container{
+            padding: 30px 20px 90px;
+        }
+    }
